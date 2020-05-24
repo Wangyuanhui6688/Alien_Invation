@@ -16,4 +16,4 @@ class Ship:
 
     def blitme(self):
         """Draw the ship at its current location."""
-        self.screen.blit(self.image, self.rect)
+        self.screen.blit(self.image, self.rect) #将一个图像(Surface)画到另外一个图像(Surface)上方
