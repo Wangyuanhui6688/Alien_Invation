@@ -14,7 +14,9 @@ class AlienInvasion:
         pygame.init() #初始化所有Pygame模块，主要为了安全
         self.settings = Settings() #创建一个Settings类的实例，这样在程序中就可以引用Settings中的属性了
 
-        self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height)) # display 是一个模块，set_mode 是该模块内部的功能，创建了Pygame.Surface该类的实例，并返回该实例。
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN) # display 是一个模块，set_mode 是该模块内部的功能，创建了Pygame.Surface该类的实例，并返回该实例。
+        self.settings.screen_width = self.screen.get_rect().width
+        self.settings.screen_height = self.screen.get_rect().height
 
         pygame.display.set_caption("Alien Invasion") # 创建窗口的标题栏
 
@@ -33,12 +35,19 @@ class AlienInvasion:
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
+                self._check_keydown_events(event)
+            elif event.type == pygame.KEYUP:
+                self._check_keyup_events(event)
+
+    def _check_keydown_events (self, event):
                 if event.key == pygame.K_RIGHT:
                     self.ship.moving_right = True
                 elif event.key == pygame.K_LEFT:
                     self.ship.moving_left = True
+                elif event.key == pygame.K_q:
+                    sys.exit()
 
-            elif event.type == pygame.KEYUP:
+    def _check_keyup_events(self, event):
                 if event.key == pygame.K_RIGHT:
                     self.ship.moving_right = False
                 elif event.key == pygame.K_LEFT:
