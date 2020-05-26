@@ -24,7 +24,8 @@ class AlienInvasion:
         pygame.init() #初始化所有Pygame模块，主要为了安全
         self.settings = Settings() #创建一个Settings类的实例，这样在程序中就可以引用Settings中的属性了
 
-        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN) # display 是一个模块，set_mode 是该模块内部的功能，创建了Pygame.Surface该类的实例，并返回该实例。
+        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN) # display 是一个模块，set_mode 是该模块内部的功能，创建了Pygame.Surface该类的实例，并返回该实例。
+        self.screen = pygame.display.set_mode((1200, 800))
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
 
