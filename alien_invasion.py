@@ -16,6 +16,8 @@ from game_stats import GameStats
 
 from button import Button
 
+from scoreboard import Scoreboard
+
 class AlienInvasion:
     """Overall class to manage game assets and behavior."""
 
@@ -31,10 +33,9 @@ class AlienInvasion:
 
         pygame.display.set_caption("Alien Invasion") # 创建窗口的标题栏
 
-        # Create an instance to store game statistics.
-
-
+        # Create an instance to store game statistics and create a scoreboard.
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
         self.ship = Ship(self) #创建战舰这个类的实例
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
@@ -120,6 +121,11 @@ class AlienInvasion:
         """ Respond to bullet-alien collision."""
         #Remove any bullets and aliens that have collided.
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        if collisions:
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
+            self.sb.prep_score()
+            self.sb.check_high_score()
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
@@ -167,6 +173,7 @@ class AlienInvasion:
             self.settings.initialize_dynamic_settings()
             self.stats.reset_stats()
             self.stats.game_active = True
+            self.sb.prep_score()
             # Hide the mouse cursor.
             pygame.mouse.set_visible(False)
 
@@ -207,6 +214,8 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+        # Draw the score information
+        self.sb.show_score()
         # Draw the play button if the game is inactive.
         if not self.stats.game_active:
             self.play_button.draw_button()
